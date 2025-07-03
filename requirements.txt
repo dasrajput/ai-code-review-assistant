@@ -1,0 +1,4 @@
+autogen-agentchat
+streamlit
+pytest
+pillow
