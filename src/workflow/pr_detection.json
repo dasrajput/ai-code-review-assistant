@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "github-webhook",
+        "responseMode": "onReceived"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "httpMethod": "GET",
+        "path": "{{$node['Webhook'].json['pull_request']['url']}}",
+        "options": {}
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [460, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "GitHub Token",
+          "value": "your-github-token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO reviews (file, suggestion, timestamp) VALUES ('{{$node['HTTP Request'].json['files'][0]['filename']}}', 'Sample review', '{{$now}}')"
+      },
+      "name": "SQLite",
+      "type": "n8n-nodes-base.sqlite",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "credentials": {
+        "sqlite": {
+          "database": "/home/node/.n8n/reviews.db"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{"node": "HTTP Request", "type": "main", "index": 0}]]
+    },
+    "HTTP Request": {
+      "main": [[{"node": "SQLite", "type": "main", "index": 0}]]
+    }
+  }
+}
