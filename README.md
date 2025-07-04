@@ -1,10 +1,22 @@
 # AI Code Review Assistant
-An AI-powered tool to automate code reviews for GitHub PRs using AutoGen, MCP, n8n, and Streamlit.
+
+## Project Overview
+This project automates code review for pull requests using n8n and GitHub API, targeting TCS/Zoho placement preparation.
 
 ## Setup
-1. Install Docker, Python 3.10+, and Git.
-2. Clone this repo: `git clone https://github.com/your-username/ai-code-review-assistant.git`.
-3. Run `pip install -r requirements.txt` (added later).
+1. Install Docker: Follow [Docker Desktop](https://www.docker.com/products/docker-desktop/) instructions.
+2. Build n8n image: Use a custom Dockerfile or pull `n8n:latest`.
+3. Run n8n:
+   ```bash
+   docker run -it --rm --user 0:0 --name n8n -p 5678:5678 -v C:/Users/{USER}/Desktop/ai-code-review-assistant/src:/home/node/.n8n --memory=2g my-n8n:latest
+   ```
+
+4. Access n8n at http://localhost:5678 .
 
 ## Status
-- Sprint 1: PR detection with n8n and SQLite logging.
+
+Sprint 1, Task 1: Completed project setup.
+Sprint 1, Task 2: Completed HTTP Request and logging setup using Code node.
+
+## Logs
+Logs are stored in src/logs/pr_logs.json.
